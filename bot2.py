@@ -6,7 +6,7 @@ import asyncio
 from enum import Enum
 from time import mktime
 import random
-
+import tokens
 intents = discord.Intents.default()
 intents.message_content = True
 
@@ -165,7 +165,7 @@ async def on_ready():
     print(f"We have logged in as {bot.user}")
 
 loop = asyncio.get_event_loop()
-loop.create_task(bot.start("MTA1NjM0NzA3OTk4OTAxODY1NA.GEhP2u.NNC-qDV4n_viEPs5hK6173aprVTxlqg9MiRXqM"))
-loop.create_task(client.start("OTMwOTc1MzkyNjcwNTY4NTI4.G0xH86.u7XIVSMtWrhqGpgXgvNAoDrWIP9-m0dOpbebak"))
+loop.create_task(bot.start(tokens.TokenHolder.nourish))
+loop.create_task(client.start(tokens.TokenHolder.turt))
 loop.run_forever()
 

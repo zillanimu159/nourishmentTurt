@@ -1,5 +1,4 @@
 import discord
-from discord import app_commands
 from discord.ext import commands, tasks
 import datetime
 import asyncio
@@ -10,11 +9,11 @@ import tokens
 intents = discord.Intents.default()
 intents.message_content = True
 
-client = discord.Client(intents=intents)
+nourish = discord.Client(intents=intents)
 randomGen = random.Random()
 
 Meal = Enum("Meal", ["BREAKFAST", "LUNCH", "DINNER"])
-
+discord.Client
 
 breakfast = [
     "Breakfast time poggies we love breakfast :tada:",
@@ -51,8 +50,8 @@ threats = [
     " so I hope you've eaten :pensive:",
 ]
 
-mentions = "<@415276291328311298> <@759970817588068364> <@541202520794726400> <@730284896010108950> <@742595076194172998> <@706321021262888980> <@987465303627821116> <@402639884478840844>"
-channel = client.get_channel(916422913052270652)
+mentions = "<@759970817588068364> <@541202520794726400> <@730284896010108950> <@742595076194172998> <@706321021262888980> <@987465303627821116> <@402639884478840844>"
+channel = nourish.get_channel(916422913052270652)
 
 
 # creating a loop that runs every day at 8:20 PDT
@@ -62,7 +61,7 @@ channel = client.get_channel(916422913052270652)
     )
 )
 async def breakfast_loop():
-    channel = client.get_channel(916422913052270652)
+    channel = nourish.get_channel(916422913052270652)
     await channel.send(await genMsg(Meal.BREAKFAST))
 
 
@@ -73,7 +72,7 @@ async def breakfast_loop():
     )
 )
 async def lunch_loop():
-    channel = client.get_channel(916422913052270652)
+    channel = nourish.get_channel(916422913052270652)
     await channel.send(await genMsg(Meal.LUNCH))
 
 
@@ -84,7 +83,7 @@ async def lunch_loop():
     )
 )
 async def dinner_loop():
-    channel = client.get_channel(916422913052270652)
+    channel = nourish.get_channel(916422913052270652)
     await channel.send(await genMsg(Meal.DINNER))
 
 
@@ -111,9 +110,9 @@ async def genMsg(meal):
     )
 
 
-@client.event
+@nourish.event
 async def on_ready():
-    print(f"We have logged in as {client.user}")
+    print(f"We have logged in as Client {nourish.user}")
     if not breakfast_loop.is_running():
         breakfast_loop.start()
     if not lunch_loop.is_running():
@@ -124,12 +123,12 @@ async def on_ready():
     #    now_loop.start()
 
 
-bot = commands.Bot(
+turt = commands.Bot(
     command_prefix="!", intents=discord.Intents.all()
 )  # intents are required depending on what you wanna do with your bot
 randomGen = random.Random()
 
-channel = bot.get_channel(1105648669962813513)
+channel = turt.get_channel(1105648669962813513)
 embed = discord.Embed(
     title="Your death",
     type="rich",
@@ -139,7 +138,7 @@ embed = discord.Embed(
 embed.add_field(name="Cause of Death:", value="Dysentery, Being cringe, Dying")
 
 
-@bot.hybrid_command(name="die")
+@turt.hybrid_command(name="die")
 async def die(ctx):
     await ctx.send(
         "And now you die " + ctx.author.display_name,
@@ -147,25 +146,25 @@ async def die(ctx):
     )
 
 
-@bot.hybrid_command(name="new")
+@turt.hybrid_command(name="new")
 async def new(ctx):
     await ctx.send(
         "And now you die " + ctx.author.display_name,
         embeds=[embed],
     )
 
-@bot.hybrid_command(name="sync")
+@turt.hybrid_command(name="sync")
 async def sync(ctx):
     if ctx.author.id == 190273240969641985:
         await ctx.send("You suck Creator " + ctx.author.display_name + " but your shit synced")
-        await bot.tree.sync()
+        await turt.tree.sync()
 
-@bot.event
+@turt.event
 async def on_ready():
-    print(f"We have logged in as {bot.user}")
+    print(f"We have logged in as Bot {turt.user}")
 
 loop = asyncio.get_event_loop()
-loop.create_task(bot.start(tokens.TokenHolder.nourish))
-loop.create_task(client.start(tokens.TokenHolder.turt))
+loop.create_task(nourish.start(tokens.nourish))
+loop.create_task(turt.start(tokens.turt))
 loop.run_forever()
 
